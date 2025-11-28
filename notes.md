@@ -2,7 +2,7 @@
 ### Keputusan Desain Utama
 Refactoring ini memisahkan kode menjadi beberapa kelas dengan tanggung jawab yang jelas. Pada folder `Services` saya menyimpan semua proses logic utama:
 - `QdrantClientService` untuk abstraksi interaksi dengan Qdrant (inisialisasi client, memastikan collection siap, dan operasi upsert/query).
-- `DocumentStore` untuk manajemen dokumen dan fallback ke in-memory ketika Qdrant tidak bisa digunakan.
+- `DocumentStore` untuk manajemen dokumen (menambahkan data atau mencari data) serta fallback ke in-memory ketika Qdrant tidak bisa digunakan.
 - `EmbeddingServices` untuk mengubah teks menjadi vektor .
 - `RagService`  untuk orchestration proses retrieve dan answer menggunakan LangGraph.
 
