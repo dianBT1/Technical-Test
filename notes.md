@@ -9,14 +9,24 @@ Refactoring ini memisahkan kode menjadi beberapa kelas dengan tanggung jawab yan
 
 Setelah itu, business logic dikumpulkan di `WorkflowController` (folder `Controller`) yang berfungsi sebagai facade: controller ini yang dipanggil oleh `main.py`. Layer API di `main.py` hanya menerima request HTTP dan meneruskannya ke `WorkflowController`, sehingga web layer tetap tipis dan lebih mudah dibaca.
 
-### Salah satu operasi business logic
-Ketika user menambah dokumen, business logic di `DocumentStore.add_document_store()` akan:
-- Membuat embedding dari teks dengan `EmbeddingServices`.
-- Membuat `doc_id` unik dengan UUID.
-- Jika `QdrantClientService.is_available()` bernilai **True**, dokumen disimpan ke Qdrant melalui `upsert_document`.
-- Jika Qdrant tidak tersedia, dokumen disimpan ke list in-memory sebagai fallback.
+### Trade-offs yang Dipertimbangkan
+**1. Singleton Pattern vs Dependency Injection**
+**Pilihan yang dipakai (Singleton):**
+- Instance `workflowcontroller` dibuat sekali di level module (`Controller/WorkflowController.py`)
+- Langsung di-import dan dipakai di `main.py` tanpa setup tambahan
+- ✅ **Keuntungan:** Kode lebih sederhana, mudah ditulis, tidak perlu setup dependency injection
 
-Dengan cara ini, aplikasi tetap bisa menerima dan menyimpan dokumen meskipun Qdrant sedang down, tanpa mengubah kontrak API yang dipakai client.
+**Alternatif (Dependency Injection via FastAPI Depends):**
+- Setiap endpoint inject dependencies melalui `Depends()`
+- ✅ **Keuntungan:** Lebih mudah untuk testing, bisa ganti dengan mock, lebih fleksibel
+
+**2. Auto-Recovery dengan Fallback ke Memory**
+**Pilihan yang dipakai (Optimistic Approach dengan Fallback):**
+- Utamakan untuk memakai database qdrant
+- Jika gagal, otomatis fallback ke in-memory storage
+- Auto-reconnect jika Qdrant down lalu hidup lagi
+- ✅ **Keuntungan:** Aplikasi tetap jalan meski Qdrant down, user experience lebih baik, resilient
+
 
 ### Peningkatan Maintainability
 Versi refactored ini meningkatkan maintainability melalui beberapa cara:
