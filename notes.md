@@ -1,5 +1,4 @@
 ## Design Decisions dan Trade-offs
-
 ### Keputusan Desain Utama
 Refactoring ini memisahkan kode menjadi beberapa kelas dengan tanggung jawab yang jelas. Pada folder `Services` saya menyimpan semua proses logic utama:
 - `QdrantClientService` untuk abstraksi interaksi dengan Qdrant (inisialisasi client, memastikan collection siap, dan operasi upsert/query).
@@ -27,11 +26,10 @@ Setelah itu, business logic dikumpulkan di `WorkflowController` (folder `Control
 - Auto-reconnect jika Qdrant down lalu hidup lagi
 - ✅ **Keuntungan:** Aplikasi tetap jalan meski Qdrant down, user experience lebih baik, resilient
 
-
 ### Peningkatan Maintainability
 Versi refactored ini meningkatkan maintainability melalui beberapa cara:
 1. **Separation of Concerns** – setiap kelas punya tanggung jawab yang jelas (Qdrant service, embedding service, document store, RAG Servoces, controller), sehingga perubahan di satu area tidak memaksa kita menyentuh seluruh kode.
 2. **Encapsulation** – data dan behavior dikelompokkan bersama (contoh: `DocumentStore` mengelola `_docs_memory` dan operasi terkait), sehingga akses ke state lebih terkontrol.
 3. **Explicit Dependencies** – dependency utama (Qdrant client, embedding service, document store, RAG workflow) di-pass melalui constructor, sehingga hubungan antar komponen jelas dan bisa di‑mock saat testing.
-4. **Readability** – struktur file yang terorganisir dan penamaan yang konsisten membuat kode lebih mudah dipahami oleh developer lain dan memudahkan penambahan unit test karena setiap komponen bisa diuji secara terpisah.
+4. **Readability** – struktur file yang terorganisir dan penamaan yang konsisten membuat kode lebih mudah dipahami oleh developer lain 
 
