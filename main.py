@@ -13,6 +13,7 @@ def ask_question(req: QuestionRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+        
 @app.post("/add")
 def add_document(req: DocumentRequest):
     try:
