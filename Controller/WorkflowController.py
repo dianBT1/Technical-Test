@@ -1,3 +1,4 @@
+import time
 from Services.QdrantClientServices import QdrantClientService
 from Services.EmbeddingServices import EmbeddingServices
 from Services.DocumentStore import DocumentStore
@@ -22,7 +23,18 @@ class WorkflowController:
         return chain
 
     def rag_workflow(self, question: str):
-        return self.workflow.invoke({"question": question})
+        start = time.time()
+        try:
+            result = self.workflow.invoke({"question": question})
+            return {
+                "question": question,
+                "answer": result["answer"],
+                "context_used": result.get("context", []),
+                "latency_sec": round(time.time() - start, 3)
+            }
+        except Exception as e:
+            raise Exception(f"Error in rag_workflow: {e}")
+        
 
     def store_document(self, text: str):
         return self.document_store.add_document_store(text)
