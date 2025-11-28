@@ -26,9 +26,7 @@ class QdrantClientService:
     
     def _try_reconnect(self):
         """Coba reconnect jika down."""
-        if self._is_ready:
-            return True
-        
+    
         try:
             if self._client is None:
                 self._client = QdrantClient("http://localhost:6333")
