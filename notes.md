@@ -4,7 +4,7 @@ Refactoring ini memisahkan kode menjadi beberapa kelas dengan tanggung jawab yan
 - `QdrantClientService` untuk abstraksi interaksi dengan Qdrant (inisialisasi client, memastikan collection siap, dan operasi upsert/query).
 - `DocumentStore` untuk manajemen dokumen (menambahkan data atau mencari data) serta fallback ke in-memory ketika Qdrant tidak bisa digunakan.
 - `EmbeddingServices` untuk mengubah teks menjadi vektor .
-- `RagService`  untuk orchestration proses retrieve dan answer menggunakan LangGraph.
+- `RagService`  untuk orchestration proses retrieve dan answer dalam proses RAG.
 
 Setelah itu, business logic dikumpulkan di `WorkflowController` (folder `Controller`) yang berfungsi sebagai facade: controller ini yang dipanggil oleh `main.py`. Layer API di `main.py` hanya menerima request HTTP dan meneruskannya ke `WorkflowController`, sehingga web layer tetap tipis dan lebih mudah dibaca.
 
