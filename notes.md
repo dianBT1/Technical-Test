@@ -25,6 +25,7 @@ Setelah itu, business logic dikumpulkan di `WorkflowController` (folder `Control
 - Jika gagal, otomatis fallback ke in-memory storage
 - Auto-reconnect jika Qdrant down lalu hidup lagi
 - ✅ **Keuntungan:** Aplikasi tetap jalan meski Qdrant down, user experience lebih baik, resilient
+- ❌ **Kekurangan:** Load time cukup lama karena harus mengecek qdrantnya aktif atau tidak terlebih dahulu
 
 ### Peningkatan Maintainability
 Versi refactored ini meningkatkan maintainability melalui beberapa cara:
